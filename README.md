@@ -1,7 +1,7 @@
 # ESC Easy Sensor Creation
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
-[![GitHub release](https://img.shields.io/github/release/Zara-Toorox/esc_easy_sensor_creation.svg)](https://github.com/Zara-Toorox/esc_easy_sensor_creation/releases)
+[![GitHub release](https://img.shields.io/github/release/Zara-Toorox/ESC-Easy-Sensor-Creation.svg)](https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A powerful Home Assistant integration for easily creating custom sensors.
@@ -58,14 +58,14 @@ A powerful Home Assistant integration for easily creating custom sensors.
 2. Go to "Integrations"
 3. Click the 3 dots in the top right
 4. Select "Custom repositories"
-5. Add: `https://github.com/Zara-Toorox/esc_easy_sensor_creation`
+5. Add: `https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation`
 6. Category: "Integration"
 7. Install "ESC Easy Sensor Creation"
 8. Restart Home Assistant
 
 ### Manual Installation
 
-1. Copy the `custom_components/esc_easy_sensor_creation` folder to your `config/custom_components` directory
+1. Copy the `custom_components/ESC-Easy-Sensor-Creation` folder to your `config/custom_components` directory
 2. Restart Home Assistant
 3. Go to Settings → Devices & Services
 4. Click "+ Add Integration"
@@ -189,8 +189,8 @@ Developed for the Home Assistant Community
 
 ## 💬 Support
 
-- **Issues:** [GitHub Issues](https://github.com/Zara-Toorox/esc_easy_sensor_creation/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/Zara-Toorox/esc_easy_sensor_creation/discussions)
+- **Issues:** [GitHub Issues](https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation/discussions)
 - **Home Assistant Forum:** Coming soon
 
 ## ⭐ Star History
