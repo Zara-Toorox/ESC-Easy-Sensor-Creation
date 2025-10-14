@@ -1,0 +1,7 @@
+{
+  "name": "ESC Easy Sensor Creation",
+  "content_in_root": false,
+  "filename": "esc_easy_sensor_creation",
+  "render_readme": true,
+  "homeassistant": "2024.1.0"
+}

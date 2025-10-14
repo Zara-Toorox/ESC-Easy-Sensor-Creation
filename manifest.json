@@ -1,0 +1,12 @@
+{
+  "domain": "esc_easy_sensor_creation",
+  "name": "ESC Easy Sensor Creation",
+  "version": "0.2.2",
+  "documentation": "https://github.com/yourusername/esc_easy_sensor_creation",
+  "issue_tracker": "https://github.com/yourusername/esc_easy_sensor_creation/issues",
+  "requirements": ["PyMySQL==1.1.0"],
+  "codeowners": ["@yourusername"],
+  "config_flow": true,
+  "integration_type": "device",
+  "iot_class": "calculated"
+}

@@ -1,0 +1,75 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "ESC Easy Sensor Creation",
+        "menu_options": {
+          "kwh_integration": "kWh Integration (Power → Energy)",
+          "sum_sensor": "Sum Sensor (Add multiple sensors)",
+          "sql_statistics": "SQL Statistics Sensor (Database queries)"
+        }
+      },
+      "sql_statistics": {
+        "title": "Choose SQL Statistics Type",
+        "menu_options": {
+          "sql_energy_day": "Energy - Today (kWh)",
+          "sql_energy_month": "Energy - Current Month (kWh)",
+          "sql_energy_year": "Energy - Current Year (kWh)",
+          "sql_energy_previous_month": "Energy - Previous Month (kWh)",
+          "sql_energy_previous_year": "Energy - Previous Year (kWh)",
+          "sql_average_day": "Average - Today",
+          "sql_average_month": "Average - Current Month",
+          "sql_average_year": "Average - Current Year",
+          "sql_max_day": "Maximum - Today",
+          "sql_max_month": "Maximum - Current Month",
+          "sql_max_year": "Maximum - Current Year",
+          "sql_min_day": "Minimum - Today",
+          "sql_min_month": "Minimum - Current Month",
+          "sql_min_year": "Minimum - Current Year"
+        }
+      },
+      "source_count": {
+        "title": "Number of Sensors",
+        "menu_options": {
+          "single_sensor": "Single Sensor",
+          "multiple_sensors": "Multiple Sensors"
+        }
+      },
+      "sql_database": {
+        "title": "Choose Database",
+        "menu_options": {
+          "db_sqlite": "Home Assistant Database (SQLite)",
+          "db_mariadb": "MariaDB (Network)"
+        }
+      },
+      "select_entities": {
+        "title": "Select Sensors",
+        "data": {
+          "source_entities": "Sensors"
+        }
+      },
+      "name_sensor": {
+        "title": "Name Sensor",
+        "data": {
+          "sensor_name": "Sensor Name"
+        }
+      },
+      "mariadb_credentials": {
+        "title": "MariaDB Credentials",
+        "data": {
+          "db_host": "Host",
+          "db_port": "Port",
+          "db_user": "Username",
+          "db_password": "Password",
+          "db_name": "Database Name"
+        }
+      },
+      "sql_base_entity": {
+        "title": "Base Sensor",
+        "data": {
+          "base_entity": "Sensor"
+        }
+      }
+    }
+  }
+}
