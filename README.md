@@ -1,202 +1,72 @@
 # ESC Easy Sensor Creation
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
-[![GitHub release](https://img.shields.io/github/release/Zara-Toorox/ESC-Easy-Sensor-Creation.svg)](https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+### _Escape the Madness of YAML_
 
-A powerful Home Assistant integration for easily creating custom sensors.
+![Logo](https://raw.githubusercontent.com/Zara-Toorox/ESC-Easy-Sensor-Creation/main/logo.png)
 
-## ✨ Features
+**Create powerful sensors in Home Assistant – without a single line of code.**
 
-### 🔋 kWh Integration Sensor
-- Integrates power (W) to energy (kWh)
-- **Left-side integration** for precise calculations
-- Perfect for the Energy Dashboard
-- State restore after restart
-- Supports multiple power sensors
-
-### ➕ Sum Sensor
-- Adds multiple sensors together
-- Automatic unit detection
-- Supports any sensor type
-- Real-time calculation
-
-### 📊 SQL Statistics Sensors (14 Types!)
-
-**Energy Statistics:**
-- Today (kWh)
-- Current Month (kWh)
-- Current Year (kWh)
-- Previous Month (kWh)
-- Previous Year (kWh)
-
-**Average Statistics:**
-- Today
-- Current Month
-- Current Year
-
-**Maximum Statistics:**
-- Today
-- Current Month
-- Current Year
-
-**Minimum Statistics:**
-- Today
-- Current Month
-- Current Year
-
-### 🗄️ Database Support
-- ✅ Home Assistant SQLite Database
-- ✅ MariaDB via Network
-- ✅ Automatic fallback to `states` table when `statistics` table is empty
-
-## 📦 Installation
-
-### HACS (Recommended)
-
-1. Open HACS
-2. Go to "Integrations"
-3. Click the 3 dots in the top right
-4. Select "Custom repositories"
-5. Add: `https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation`
-6. Category: "Integration"
-7. Install "ESC Easy Sensor Creation"
-8. Restart Home Assistant
-
-### Manual Installation
-
-1. Copy the `custom_components/ESC-Easy-Sensor-Creation` folder to your `config/custom_components` directory
-2. Restart Home Assistant
-3. Go to Settings → Devices & Services
-4. Click "+ Add Integration"
-5. Search for "ESC Easy Sensor Creation"
-
-## 🚀 Usage
-
-### Creating a kWh Integration Sensor
-
-1. Go to Settings → Devices & Services → Add Integration
-2. Search for "ESC Easy Sensor Creation"
-3. Select "kWh Integration"
-4. Choose one or more **power sensors (W)**
-5. Name your sensor
-6. Done! The sensor will now continuously calculate energy
-
-**Example:** 3 power outlets with 100W each → kWh sensor shows total energy consumption
-
-### Creating a Sum Sensor
-
-1. Select "Sum Sensor"
-2. Choose single or multiple sensors
-3. Select the sensors to add
-4. Name your sensor
-5. Done! The sensor will show the sum of all selected sensors
-
-**Example:** Sum of all room temperatures
-
-### Creating a SQL Statistics Sensor
-
-1. Select "SQL Statistics Sensor"
-2. Choose the type (e.g., "Average - Today")
-3. Select database:
-   - Home Assistant Database (SQLite) - usually the right choice
-   - MariaDB - for advanced users
-4. Select the base sensor
-5. Name your sensor
-6. Done!
-
-**Example:** Average temperature of today from a temperature sensor
-
-## ⚙️ MariaDB Configuration
-
-For MariaDB Add-on users:
-- **Host:** `core-mariadb`
-- **Port:** `3306`
-- **User:** `homeassistant`
-- **Database:** `homeassistant`
-- **Password:** Your MariaDB password
-
-## 🔧 Technical Details
-
-### Left-Side Integration
-
-The kWh sensor uses **left-side integration** for energy calculation:
-This means: At each change, the **previous** power value is used, not the average.
-
-### SQL Fallback
-
-When the `statistics` table has no data (e.g., for sensors without long-term statistics),
-the system automatically falls back to the `states` table and calculates values in real-time.
-
-## 🐛 Troubleshooting
-
-### SQL Sensor shows 0
-
-- Check if the sensor has long-term statistics: Developer Tools → Statistics
-- No problem! The sensor automatically uses the `states` table as fallback
-
-### kWh Sensor not counting
-
-- Check if source sensors output **Watts (W)**
-- Check if sensors provide regular updates
-
-### Icon not displayed
-
-- Clear browser cache (Ctrl + F5)
-- Restart Home Assistant
-- Not critical - works without icon!
-
-### MariaDB connection fails
-
-- Check host, port, username, and password
-- Verify MariaDB Add-on is running
-- Check firewall settings
-
-## 📝 Changelog
-
-### Version 0.2.2
-- SQL fallback to states table
-- Improved MariaDB support
-- Menu-based config flow
-- Bug fixes and improvements
-
-### Version 0.1.0
-- First version
-- kWh Integration, Sum Sensor, SQL Statistics
-
-## 🤝 Contributing
-
-Contributions are welcome! Please create a Pull Request or Issue on GitHub.
-
-### Development Setup
-
-1. Fork the repository
-2. Clone your fork
-3. Create a branch: `git checkout -b feature/your-feature`
-4. Make your changes
-5. Test thoroughly
-6. Commit: `git commit -m "Add your feature"`
-7. Push: `git push origin feature/your-feature`
-8. Create a Pull Request
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details
-
-## 🙏 Credits
-
-Developed for the Home Assistant Community
-
-## 💬 Support
-
-- **Issues:** [GitHub Issues](https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation/discussions)
-- **Home Assistant Forum:** Coming soon
-
-## ⭐ Star History
-
-If you find this integration useful, please consider giving it a star on GitHub!
+This integration is your shortcut to useful and intelligent sensors. If you're new to Home Assistant and don't want to write complex YAML files or templates, ESC is the perfect tool for you.
 
 ---
 
-**Made with ❤️ for Home Assistant**
+## ✨ What can this integration do for you?
+
+ESC provides a simple, guided menu interface for tasks that would otherwise require deep technical knowledge.
+
+* **Create kWh Energy Sensors:** Automatically convert your device's power consumption (in Watts) into energy (in kWh). Perfect for Home Assistant's official **Energy Dashboard**.
+* **Create Sum Sensors:** Sum the values of multiple sensors. Ideal for determining the total consumption of all lights in a room.
+* **Create History Statistics Sensors:** Easily find the **highest, lowest, or average value** of a sensor for today, this month, or the entire year.
+* **Sensor Classification:** Assign a class to your sensors (e.g., Energy, Power, Temperature) to help Home Assistant display the correct icon and format.
+* **Clean Organization:** All created sensors are neatly grouped under a single device in your device list.
+
+---
+
+## 🚀 Installation (HACS)
+
+The easiest way to install is via the [Home Assistant Community Store (HACS)](https://hacs.xyz/).
+
+1.  Open HACS and go to **Integrations**.
+2.  Click the 3 dots in the top right corner and select **Custom repositories**.
+3.  Add this repository's URL: `https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation`
+4.  Select the category **Integration**.
+5.  Search for **"ESC Easy Sensor Creation"** and click "Install".
+6.  Restart Home Assistant when prompted.
+
+---
+
+## 🛠️ How-To: Creating Your Sensors
+
+After installation, you can find ESC here: **Settings > Devices & Services > Add Integration > ESC Easy Sensor Creation**.
+
+### Example 1: Create a kWh sensor for the Energy Dashboard
+
+Do you have a smart plug that shows the current power consumption in Watts? Here's how to turn it into a counter for the Energy Dashboard:
+
+1.  Start the ESC configuration.
+2.  Select "**kWh Sensor (creates Riemann Sensor for Energy Dashboard)**".
+3.  For "Source Sensor (W)", select your smart plug.
+4.  Give the new sensor a name, e.g., "Washing Machine Consumption kWh".
+5.  Click "Submit".
+6.  **IMPORTANT:** This sensor is a native Home Assistant helper. You can now find it under **Settings > Devices & Services > Helpers**.
+
+### Example 2: Calculate the total consumption of three lamps
+
+1.  Start the ESC configuration.
+2.  Select "**Sum (add multiple sensors)**".
+3.  For "Which sensors do you want to add?", select all the lamps you want to sum up.
+4.  Follow the next steps to give the sensor a name.
+5.  **Done!** You now have a new sensor that will always show you the total consumption.
+
+### Example 3: Determine the average temperature for today
+
+1.  Start the ESC configuration.
+2.  Select "**History Statistics (Average, MIN, MAX)**".
+3.  Choose your temperature sensor as the base sensor.
+4.  In the next step, select the statistic type, e.g., "**Average - Today**".
+5.  Give the sensor a name and finish the configuration.
+6.  **Done!** Your new sensor will now display the average temperature for the current day.
+
+---
+
+Enjoy the integration! If you run into any problems or have feature requests, feel free to [open an Issue on GitHub](https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation/issues).
