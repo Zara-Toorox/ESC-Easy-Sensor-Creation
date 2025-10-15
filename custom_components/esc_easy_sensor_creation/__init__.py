@@ -22,9 +22,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         config_entry_id=entry.entry_id,
         identifiers={(DOMAIN, DOMAIN)}, # Static identifier for the whole integration
         name="ESC Easy Sensor Creation",
-        manufacturer="ESC by Gemini",
+        manufacturer="ESC by Zara Toorox",
         model="Sensor Creator",
-        sw_version="5.0.3",
+        sw_version="5.0.4",
     )
     _LOGGER.debug(f"Zentrales ESC-Gerät sichergestellt.")
     
