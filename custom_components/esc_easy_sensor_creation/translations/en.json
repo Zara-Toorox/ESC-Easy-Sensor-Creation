@@ -3,73 +3,79 @@
     "step": {
       "user": {
         "title": "ESC Easy Sensor Creation",
-        "menu_options": {
-          "kwh_integration": "kWh Integration (Power → Energy)",
-          "sum_sensor": "Sum Sensor (Add multiple sensors)",
-          "sql_statistics": "SQL Statistics Sensor (Database queries)"
-        }
-      },
-      "sql_statistics": {
-        "title": "Choose SQL Statistics Type",
-        "menu_options": {
-          "sql_energy_day": "Energy - Today (kWh)",
-          "sql_energy_month": "Energy - Current Month (kWh)",
-          "sql_energy_year": "Energy - Current Year (kWh)",
-          "sql_energy_previous_month": "Energy - Previous Month (kWh)",
-          "sql_energy_previous_year": "Energy - Previous Year (kWh)",
-          "sql_average_day": "Average - Today",
-          "sql_average_month": "Average - Current Month",
-          "sql_average_year": "Average - Current Year",
-          "sql_max_day": "Maximum - Today",
-          "sql_max_month": "Maximum - Current Month",
-          "sql_max_year": "Maximum - Current Year",
-          "sql_min_day": "Minimum - Today",
-          "sql_min_month": "Minimum - Current Month",
-          "sql_min_year": "Minimum - Current Year"
-        }
-      },
-      "source_count": {
-        "title": "Number of Sensors",
-        "menu_options": {
-          "single_sensor": "Single Sensor",
-          "multiple_sensors": "Multiple Sensors"
-        }
-      },
-      "sql_database": {
-        "title": "Choose Database",
-        "menu_options": {
-          "db_sqlite": "Home Assistant Database (SQLite)",
-          "db_mariadb": "MariaDB (Network)"
-        }
-      },
-      "select_entities": {
-        "title": "Select Sensors",
+        "description": "What type of sensor would you like to create?",
         "data": {
-          "source_entities": "Sensors"
+          "sensor_type": "Sensor Type"
+        }
+      },
+      "select_count": {
+        "title": "Number of Sensors",
+        "description": "Should a single sensor or multiple sensors serve as the basis?",
+        "data": {
+          "sensor_count": "Count"
+        }
+      },
+      "select_single_sensor": {
+        "title": "Select Sensor",
+        "description": "Select the sensor that will serve as the basis.",
+        "data": {
+          "sensor": "Sensor"
+        }
+      },
+      "select_multiple_sensors": {
+        "title": "Select Sensors",
+        "description": "Select multiple sensors that will serve as the basis.",
+        "data": {
+          "sensors": "Sensors"
+        }
+      },
+      "select_db_type": {
+        "title": "Select Database",
+        "description": "Which database would you like to use?",
+        "data": {
+          "db_type": "Database Type"
+        }
+      },
+      "mariadb_config": {
+        "title": "MariaDB Configuration",
+        "description": "Enter the connection details for MariaDB.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "username": "Username",
+          "password": "Password",
+          "database": "Database"
+        }
+      },
+      "select_sql_stat_type": {
+        "title": "Select Statistic Type",
+        "description": "Which statistic would you like to calculate?",
+        "data": {
+          "sql_stat_type": "Statistic Type"
+        }
+      },
+      "device_class": {
+        "title": "Classify Sensor",
+        "description": "Would you like to classify your sensor? This helps Home Assistant display the correct icon and format.",
+        "data": {
+          "device_class": "Classification"
         }
       },
       "name_sensor": {
         "title": "Name Sensor",
+        "description": "What should your new sensor be called?",
         "data": {
           "sensor_name": "Sensor Name"
         }
-      },
-      "mariadb_credentials": {
-        "title": "MariaDB Credentials",
-        "data": {
-          "db_host": "Host",
-          "db_port": "Port",
-          "db_user": "Username",
-          "db_password": "Password",
-          "db_name": "Database Name"
-        }
-      },
-      "sql_base_entity": {
-        "title": "Base Sensor",
-        "data": {
-          "base_entity": "Sensor"
-        }
       }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to database. Please check your credentials.",
+      "sql_requires_single_sensor": "SQL statistics only work with a single sensor."
+    },
+    "abort": {
+      "already_configured": "This sensor is already configured.",
+      "sql_requires_single_sensor": "SQL statistics require exactly one base sensor. Please select 'Single Sensor'."
     }
   }
 }

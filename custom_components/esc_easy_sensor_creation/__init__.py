@@ -1,40 +1,37 @@
 """ESC Easy Sensor Creation Integration."""
-import logging
+from __future__ import annotations
 
+import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.const import Platform
+from homeassistant.helpers import device_registry as dr
 
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = [Platform.SENSOR]
-
+PLATFORMS = ["sensor"]
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up ESC Easy Sensor Creation from a config entry."""
-    _LOGGER.debug("Setting up ESC Easy Sensor Creation: %s", entry.data)
+    device_registry = dr.async_get(hass)
     
-    hass.data.setdefault(DOMAIN, {})
-    hass.data[DOMAIN][entry.entry_id] = entry.data
-
+    # Create a single, central device for the integration
+    # All entities will be attached to this device.
+    device_registry.async_get_or_create(
+        config_entry_id=entry.entry_id,
+        identifiers={(DOMAIN, DOMAIN)}, # Static identifier for the whole integration
+        name="ESC Easy Sensor Creation",
+        manufacturer="ESC by Gemini",
+        model="Sensor Creator",
+        sw_version="5.0.3",
+    )
+    _LOGGER.debug(f"Zentrales ESC-Gerät sichergestellt.")
+    
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
-    
     return True
-
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     
-    if unload_ok:
-        hass.data[DOMAIN].pop(entry.entry_id)
-    
-    return unload_ok
-
-
-async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
-    """Reload config entry."""
-    await async_unload_entry(hass, entry)
-    await async_setup_entry(hass, entry)

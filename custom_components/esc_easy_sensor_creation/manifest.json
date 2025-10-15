@@ -1,12 +1,12 @@
 {
   "domain": "esc_easy_sensor_creation",
   "name": "ESC Easy Sensor Creation",
-  "version": "0.2.2",
-  "documentation": "https://github.com/yourusername/esc_easy_sensor_creation",
-  "issue_tracker": "https://github.com/yourusername/esc_easy_sensor_creation/issues",
-  "requirements": ["PyMySQL==1.1.0"],
-  "codeowners": ["@yourusername"],
+  "codeowners": [],
   "config_flow": true,
-  "integration_type": "device",
-  "iot_class": "calculated"
+  "dependencies": ["recorder"],
+  "documentation": "https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation/issues",
+  "requirements": [],
+  "version": "5.1.0-rc3"
 }

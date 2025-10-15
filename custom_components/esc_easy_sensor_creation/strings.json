@@ -3,75 +3,60 @@
     "step": {
       "user": {
         "title": "ESC Easy Sensor Creation",
-        "description": "Wähle den Typ des Sensors, den du erstellen möchtest.",
-        "menu_options": {
-          "kwh_integration": "kWh Integration (Leistung → Energie)",
-          "sum_sensor": "Summen-Sensor (Mehrere Sensoren addieren)",
-          "sql_statistics": "SQL Statistik-Sensor (Datenbank-Abfragen)"
-        }
-      },
-      "sql_statistics": {
-        "title": "SQL Statistik-Typ wählen",
-        "menu_options": {
-          "sql_energy_day": "Energie - Heute (kWh)",
-          "sql_energy_month": "Energie - Aktueller Monat (kWh)",
-          "sql_energy_year": "Energie - Aktuelles Jahr (kWh)",
-          "sql_energy_previous_month": "Energie - Vormonat (kWh)",
-          "sql_energy_previous_year": "Energie - Vorjahr (kWh)",
-          "sql_average_day": "Durchschnitt - Heute",
-          "sql_average_month": "Durchschnitt - Aktueller Monat",
-          "sql_average_year": "Durchschnitt - Aktuelles Jahr",
-          "sql_max_day": "Maximum - Heute",
-          "sql_max_month": "Maximum - Aktueller Monat",
-          "sql_max_year": "Maximum - Aktuelles Jahr",
-          "sql_min_day": "Minimum - Heute",
-          "sql_min_month": "Minimum - Aktueller Monat",
-          "sql_min_year": "Minimum - Aktuelles Jahr"
-        }
-      },
-      "source_count": {
-        "title": "Anzahl der Sensoren",
-        "menu_options": {
-          "single_sensor": "Ein Sensor",
-          "multiple_sensors": "Mehrere Sensoren"
-        }
-      },
-      "sql_database": {
-        "title": "Datenbank wählen",
-        "menu_options": {
-          "db_sqlite": "Home Assistant Datenbank (SQLite)",
-          "db_mariadb": "MariaDB (Netzwerk)"
-        }
-      },
-      "select_entities": {
-        "title": "Sensoren auswählen",
-        "description": "{info}",
+        "description": "Was für einen Sensor möchtest Du erstellen?",
         "data": {
-          "source_entities": "Sensoren"
+          "sensor_type": "Sensor-Typ"
+        }
+      },
+      "kwh_config": {
+        "title": "kWh Sensor erstellen",
+        "description": "Wählen Sie den Power-Sensor (in W oder kW), der integriert werden soll. Es wird ein nativer Home Assistant Riemann Sensor (Helfer) erstellt, ideal für das Energie-Dashboard. Sie finden ihn nach der Erstellung unter **Einstellungen > Geräte & Dienste > Helfer**.",
+        "data": {
+          "source_sensor": "Quellsensor (W)",
+          "sensor_name": "Name des neuen kWh-Sensors"
+        }
+      },
+      "select_sensors": {
+        "title": "Sensoren für Summe auswählen",
+        "description": "Wählen Sie mehrere Sensoren aus, deren Werte addiert werden sollen. Achten Sie darauf, dass alle die gleiche Maßeinheit haben.",
+        "data": {
+          "source_sensors": "Welche Sensoren möchtest Du addieren?"
+        }
+      },
+      "select_single_sensor": {
+        "title": "Sensor für Statistik auswählen",
+        "description": "Wählen Sie den Sensor aus, der als Basis für die Statistik-Berechnung dient.",
+        "data": {
+          "source_sensors": "Sensor"
+        }
+      },
+      "select_sql_stat_type": {
+        "title": "Statistik-Typ auswählen",
+        "description": "Welche Statistik möchten Sie berechnen?",
+        "data": {
+          "sql_stat_type": "Statistik-Typ"
+        }
+      },
+      "device_class": {
+        "title": "Sensor klassifizieren",
+        "description": "Möchten Sie Ihren Sensor klassifizieren? Dies hilft Home Assistant, das richtige Icon und Format anzuzeigen.",
+        "data": {
+          "device_class": "Klassifizierung"
         }
       },
       "name_sensor": {
         "title": "Sensor benennen",
+        "description": "Wie soll Ihr neuer Sensor heißen?",
         "data": {
           "sensor_name": "Sensor-Name"
         }
-      },
-      "mariadb_credentials": {
-        "title": "MariaDB Zugangsdaten",
-        "data": {
-          "db_host": "Host",
-          "db_port": "Port",
-          "db_user": "Benutzername",
-          "db_password": "Passwort",
-          "db_name": "Datenbank-Name"
-        }
-      },
-      "sql_base_entity": {
-        "title": "Basis-Sensor",
-        "data": {
-          "base_entity": "Sensor"
-        }
       }
+    },
+    "error": {
+      "name_exists": "Ein Helfer mit diesem Namen existiert bereits. Bitte wählen Sie einen anderen Namen."
+    },
+    "abort": {
+      "kwh_helper_created": "Dein kWh-Sensor wurde erstellt. Du findest ihn unter Helfer."
     }
   }
 }
