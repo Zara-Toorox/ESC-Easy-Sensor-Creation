@@ -24,7 +24,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         name="ESC Easy Sensor Creation",
         manufacturer="ESC by Zara Toorox",
         model="Sensor Creator",
-        sw_version="5.0.3",
+        sw_version="5.0.4",
     )
     _LOGGER.debug(f"Zentrales ESC-Gerät sichergestellt.")
     
