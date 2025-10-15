@@ -2,7 +2,7 @@
 
 ### _Escape the Madness of YAML_
 
-![Logo](https://raw.githubusercontent.com/Zara-Toorox/ESC-Easy-Sensor-Creation/main/logo.png)
+<img src="https://raw.githubusercontent.com/Zara-Toorox/ESC-Easy-Sensor-Creation/main/logo.png" width="200" alt="ESC Logo">
 
 **Create powerful sensors in Home Assistant – without a single line of code.**
 
