@@ -112,3 +112,6 @@ Enjoy the integration! If you run into any problems or have feature requests, fe
 **Version:** 5.1.0-rc6  
 **HACS:** Search "ESC Easy Sensor Creation"  
 **Docs & Screenshots:** More coming soon – stay tuned!
+=======
+**Docs & Screenshots:** More coming soon – stay tuned!
+>>>>>>> f3c27b1 (Add: CHANGELOG.md for HACS version notes)
