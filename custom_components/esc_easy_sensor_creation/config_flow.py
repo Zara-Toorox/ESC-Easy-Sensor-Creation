@@ -7,10 +7,13 @@ from homeassistant.core import HomeAssistant
 
 from .const import (
     DOMAIN, SENSOR_TYPE_SUM, SENSOR_TYPE_SQL, SENSOR_TYPE_KWH_HELPER,
+    SENSOR_TYPE_DELTA, SENSOR_TYPE_BATTERY,
     SQL_STAT_AVG_TODAY, SQL_STAT_AVG_MONTH, SQL_STAT_AVG_YEAR,
     SQL_STAT_MAX_TODAY, SQL_STAT_MAX_MONTH, SQL_STAT_MAX_YEAR,
     SQL_STAT_MIN_TODAY, SQL_STAT_MIN_MONTH, SQL_STAT_MIN_YEAR,
-    DEVICE_CLASSES, DEVICE_CLASS_NONE
+    DELTA_PERIOD_TODAY_YESTERDAY, DELTA_PERIOD_MONTH_PREV,
+    BATTERY_MODE_CHARGE, BATTERY_MODE_DISCHARGE,
+    DEVICE_CLASSES, DEVICE_CLASS_NONE, DEVICE_CLASS_POWER  # Fix: DEVICE_CLASS_POWER hinzugefügt
 )
 
 async def _get_helper_names(hass: HomeAssistant) -> list[str]:
@@ -37,6 +40,14 @@ class ESCConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 return await self.async_step_select_single_sensor()
             if sensor_type == SENSOR_TYPE_KWH_HELPER:
                 return await self.async_step_kwh_config()
+            if sensor_type == SENSOR_TYPE_DELTA:
+                return await self.async_step_select_delta_sensor()
+            if sensor_type == SENSOR_TYPE_BATTERY:
+                return await self.async_step_battery_mode()
+            if sensor_type == "binary_threshold":  # Neuer Typ für Binary
+                return await self.async_step_binary_threshold()
+            if sensor_type == "toggle_switch":  # Neuer für Switch
+                return await self.async_step_toggle_target()
             # Default to SUM sensor
             return await self.async_step_select_sensors()
 
@@ -48,6 +59,10 @@ class ESCConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         {"label": "kWh Sensor (erstellt Riemann Sensor für Energie-Dashboard)", "value": SENSOR_TYPE_KWH_HELPER},
                         {"label": "Summe (mehrere Sensoren addieren)", "value": SENSOR_TYPE_SUM},
                         {"label": "Verlaufs-Statistik (Durchschnitt, MIN, MAX)", "value": SENSOR_TYPE_SQL},
+                        {"label": "Verlauf-Delta (z.B. heute vs. gestern)", "value": SENSOR_TYPE_DELTA},
+                        {"label": "Akku Ladung/Entladung (positiv/negativ filtern + Riemann)", "value": SENSOR_TYPE_BATTERY},
+                        {"label": "Binary Threshold (Alarm bei >/< Wert)", "value": "binary_threshold"},
+                        {"label": "Toggle Switch (Sensor pausieren/resetten)", "value": "toggle_switch"},
                     ], mode=selector.SelectSelectorMode.LIST)
                 ),
             })
@@ -96,6 +111,78 @@ class ESCConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             }),
         )
 
+    async def async_step_battery_mode(self, user_input=None):
+        """Handle battery mode selection (charge/discharge)."""
+        if user_input is not None:
+            self.data["battery_mode"] = user_input["battery_mode"]
+            return await self.async_step_battery_sensor()
+
+        return self.async_show_form(
+            step_id="battery_mode",
+            data_schema=vol.Schema({
+                vol.Required("battery_mode"): selector.SelectSelector(
+                    selector.SelectSelectorConfig(options=[
+                        {"label": "Positive Werte (Ladung, z.B. PV/Solar)", "value": BATTERY_MODE_CHARGE},
+                        {"label": "Negative Werte (Entladung, z.B. Akku/Auto)", "value": BATTERY_MODE_DISCHARGE},
+                    ], mode=selector.SelectSelectorMode.LIST)
+                ),
+            })
+        )
+
+    async def async_step_battery_sensor(self, user_input=None):
+        """Select source for battery."""
+        if user_input is not None:
+            self.data["source_sensor"] = user_input["source_sensor"]
+            # Create filtered W-Sensor + Riemann Helper
+            await self._create_battery_entities()
+            return self.async_create_entry(
+                title=f"Akku {self.data['battery_mode'].title()}",
+                data=self.data
+            )
+
+        return self.async_show_form(
+            step_id="battery_sensor",
+            data_schema=vol.Schema({
+                vol.Required("source_sensor"): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain="sensor", device_class="power")  # Nur Power-Sensoren
+                ),
+            })
+        )
+
+    async def _create_battery_entities(self):
+        """Create W-filter Sensor and Riemann Helper."""
+        source = self.data["source_sensor"]
+        mode = self.data["battery_mode"]
+        name_base = f"Akku {mode.title()}"
+        
+        # 1. Filtered W-Sensor (nur positive/absolute negative)
+        w_config = {
+            "sensor_type": "battery_w",
+            "source_sensors": [source],
+            "battery_mode": mode,
+            "sensor_name": f"{name_base} (W)",
+            "device_class": DEVICE_CLASS_POWER
+        }
+        # Hier würdest du den W-Sensor via sensor.py erstellen, aber da's im Flow ist, speichere in data
+        self.data["w_sensor_config"] = w_config
+        
+        # 2. Riemann Helper (kWh, left Riemann) – nutzt original Source (HA handhabt es; für Filter: Passe an filtered Entity an, wenn verfügbar)
+        helper_name = f"{name_base} (kWh)"
+        existing_names = await _get_helper_names(self.hass)
+        if helper_name not in existing_names:
+            await self.hass.config_entries.flow.async_init(
+                "integration",
+                context={"source": "user"},
+                data={
+                    "name": helper_name,
+                    "source": source,  # Könnte auf filtered W geändert werden, sobald Entity-ID bekannt
+                    "unit_prefix": "k",
+                    "unit_time": "h",
+                    "method": "left",
+                    "state_class": "total_increasing"  # Für Energy-Dashboard
+                },
+            )
+
     async def async_step_select_sensors(self, user_input=None):
         """Handle sensor selection for Sum."""
         if user_input is not None:
@@ -126,6 +213,39 @@ class ESCConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             })
         )
 
+    async def async_step_select_delta_sensor(self, user_input=None):
+        """Handle sensor selection for Delta."""
+        if user_input is not None:
+            self.data["source_sensor"] = user_input["source_sensor"]
+            return await self.async_step_delta_period()
+
+        return self.async_show_form(
+            step_id="select_delta_sensor",
+            data_schema=vol.Schema({
+                vol.Required("source_sensor"): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain="sensor")
+                ),
+            })
+        )
+
+    async def async_step_delta_period(self, user_input=None):
+        """Select period for Delta."""
+        if user_input is not None:
+            self.data["delta_period"] = user_input["delta_period"]
+            return await self.async_step_device_class()
+
+        return self.async_show_form(
+            step_id="delta_period",
+            data_schema=vol.Schema({
+                vol.Required("delta_period"): selector.SelectSelector(
+                    selector.SelectSelectorConfig(options=[
+                        {"label": "Heute vs. Gestern", "value": DELTA_PERIOD_TODAY_YESTERDAY},
+                        {"label": "Dieser Monat vs. Vorheriger", "value": DELTA_PERIOD_MONTH_PREV},
+                    ], mode=selector.SelectSelectorMode.DROPDOWN)
+                ),
+            })
+        )
+
     async def async_step_select_sql_stat_type(self, user_input=None):
         """Select statistic type for History sensor."""
         if user_input is not None:
@@ -146,6 +266,48 @@ class ESCConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         {"label": "Minimum - Heute", "value": SQL_STAT_MIN_TODAY},
                         {"label": "Minimum - Dieser Monat", "value": SQL_STAT_MIN_MONTH},
                         {"label": "Minimum - Dieses Jahr", "value": SQL_STAT_MIN_YEAR},
+                    ], mode=selector.SelectSelectorMode.DROPDOWN)
+                ),
+            })
+        )
+
+    async def async_step_binary_threshold(self, user_input=None):
+        """Handle binary threshold config."""
+        if user_input is not None:
+            self.data.update(user_input)
+            return await self.async_step_device_class()  # Binary hat auch Class (z.B. heat)
+
+        return self.async_show_form(
+            step_id="binary_threshold",
+            data_schema=vol.Schema({
+                vol.Required("source_sensor"): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain="sensor")
+                ),
+                vol.Required("threshold"): vol.All(vol.Coerce(float), vol.Range(min=-1000, max=1000)),
+                vol.Required("above_threshold"): bool,  # True: On wenn >, False: On wenn <
+            })
+        )
+
+    async def async_step_toggle_target(self, user_input=None):
+        """Handle toggle target config."""
+        if user_input is not None:
+            self.data["target_entity"] = user_input["target_entity"]
+            self.data["action"] = user_input.get("action", "pause")  # z.B. pause oder reset
+            return self.async_create_entry(
+                title=f"Toggle für {user_input['target_entity']}",
+                data=self.data
+            )
+
+        return self.async_show_form(
+            step_id="toggle_target",
+            data_schema=vol.Schema({
+                vol.Required("target_entity"): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain=["sensor", "switch"])
+                ),
+                vol.Optional("action"): selector.SelectSelector(
+                    selector.SelectSelectorConfig(options=[
+                        {"label": "Pausieren", "value": "pause"},
+                        {"label": "Resetten", "value": "reset"},
                     ], mode=selector.SelectSelectorMode.DROPDOWN)
                 ),
             })
@@ -174,13 +336,14 @@ class ESCConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return self.async_create_entry(title=self.data["sensor_name"], data=self.data)
 
         suggested_name = "Neuer Sensor"
-        if self.data["sensor_type"] == SENSOR_TYPE_SUM:
+        if self.data.get("sensor_type") == SENSOR_TYPE_SUM:
             suggested_name = "Summen-Sensor"
-        elif self.data["sensor_type"] == SENSOR_TYPE_SQL:
+        elif self.data.get("sensor_type") == SENSOR_TYPE_SQL:
             suggested_name = self.data.get("sql_stat_type", "Statistik").replace("_", " ").title()
+        elif self.data.get("sensor_type") == SENSOR_TYPE_DELTA:
+            suggested_name = self.data.get("delta_period", "Delta").replace("_", " ").title()
 
         return self.async_show_form(
             step_id="name_sensor",
             data_schema=vol.Schema({vol.Required("sensor_name", default=suggested_name): str}),
         )
-        

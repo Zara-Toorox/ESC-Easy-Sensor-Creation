@@ -5,7 +5,9 @@ DOMAIN = "esc_easy_sensor_creation"
 # Sensor Types
 SENSOR_TYPE_SUM = "sum"
 SENSOR_TYPE_SQL = "sql_statistics"
-SENSOR_TYPE_KWH_HELPER = "kwh_helper" # Neuer Typ zur Unterscheidung im Flow
+SENSOR_TYPE_KWH_HELPER = "kwh_helper"  # Neuer Typ zur Unterscheidung im Flow
+SENSOR_TYPE_DELTA = "delta"  # Neuer: Verlauf-Delta (z.B. heute vs. gestern)
+SENSOR_TYPE_BATTERY = "battery_charge"  # Neuer: Akku Ladung/Entladung mit Filter + Riemann
 
 # SQL Statistics Types
 SQL_STAT_AVG_TODAY = "avg_today"
@@ -20,7 +22,15 @@ SQL_STAT_MIN_TODAY = "min_today"
 SQL_STAT_MIN_MONTH = "min_month"
 SQL_STAT_MIN_YEAR = "min_year"
 
-# Device Classes
+# Delta Periods
+DELTA_PERIOD_TODAY_YESTERDAY = "today_vs_yesterday"
+DELTA_PERIOD_MONTH_PREV = "month_vs_prev"
+
+# Battery Modes
+BATTERY_MODE_CHARGE = "charge"  # Positive Werte (Ladung)
+BATTERY_MODE_DISCHARGE = "discharge"  # Negative Werte (Entladung, absolut)
+
+# Device Classes (erweitert um battery)
 DEVICE_CLASS_POWER = "power"
 DEVICE_CLASS_ENERGY = "energy"
 DEVICE_CLASS_TEMPERATURE = "temperature"
@@ -42,3 +52,16 @@ DEVICE_CLASSES = [
     DEVICE_CLASS_VOLTAGE,
     DEVICE_CLASS_CURRENT,
 ]
+
+# Unit Fallbacks aus DeviceClass (für Stabilität)
+DEVICE_CLASS_TO_UNIT = {
+    "power": "W",
+    "energy": "kWh",
+    "temperature": "°C",
+    "humidity": "%",
+    "battery": "%",
+    "monetary": "€",
+    "voltage": "V",
+    "current": "A",
+    "none": None,
+}

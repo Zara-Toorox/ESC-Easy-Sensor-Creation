@@ -7,6 +7,7 @@
   "documentation": "https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/Zara-Toorox/ESC-Easy-Sensor-Creation/issues",
+  "platforms": ["sensor", "binary_sensor", "switch"],
   "requirements": [],
-  "version": "5.1.0-rc4"
+  "version": "5.1.0-rc6"
 }

@@ -16,6 +16,20 @@
           "sensor_name": "Name des neuen kWh-Sensors"
         }
       },
+      "battery_mode": {
+        "title": "Akku-Modus wählen",
+        "description": "Liefert dein Sensor positive (Ladung) oder negative (Entladung) Werte? Der W-Sensor filtert entsprechend, und ein Riemann-kWh-Helfer wird erstellt.",
+        "data": {
+          "battery_mode": "Modus"
+        }
+      },
+      "battery_sensor": {
+        "title": "Power-Sensor für Akku wählen",
+        "description": "Wähle den Sensor mit Werten (kann positiv/negativ sein).",
+        "data": {
+          "source_sensor": "Quellsensor (W)"
+        }
+      },
       "select_sensors": {
         "title": "Sensoren für Summe auswählen",
         "description": "Wählen Sie mehrere Sensoren aus, deren Werte addiert werden sollen. Achten Sie darauf, dass alle die gleiche Maßeinheit haben.",
@@ -30,11 +44,42 @@
           "source_sensors": "Sensor"
         }
       },
+      "select_delta_sensor": {
+        "title": "Sensor für Delta auswählen",
+        "description": "Wählen Sie den Sensor für den Verlaufsvergleich.",
+        "data": {
+          "source_sensor": "Sensor"
+        }
+      },
+      "delta_period": {
+        "title": "Delta-Periode wählen",
+        "description": "Über welchen Zeitraum soll der Vergleich laufen?",
+        "data": {
+          "delta_period": "Periode"
+        }
+      },
       "select_sql_stat_type": {
         "title": "Statistik-Typ auswählen",
         "description": "Welche Statistik möchten Sie berechnen?",
         "data": {
           "sql_stat_type": "Statistik-Typ"
+        }
+      },
+      "binary_threshold": {
+        "title": "Binary Threshold konfigurieren",
+        "description": "Erstelle einen Alarm, der on wird, wenn der Wert über/unter einem Schwellwert liegt.",
+        "data": {
+          "source_sensor": "Quellsensor",
+          "threshold": "Schwellwert",
+          "above_threshold": "On bei > Schwellwert (sonst <)"
+        }
+      },
+      "toggle_target": {
+        "title": "Toggle-Ziel konfigurieren",
+        "description": "Wähle die Entity, die du pausieren/resetten möchtest.",
+        "data": {
+          "target_entity": "Ziel-Entity",
+          "action": "Aktion"
         }
       },
       "device_class": {

@@ -10,7 +10,7 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = ["sensor"]
+PLATFORMS = ["sensor", "binary_sensor", "switch"]  # Erweitert um neue
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up ESC Easy Sensor Creation from a config entry."""
@@ -24,7 +24,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         name="ESC Easy Sensor Creation",
         manufacturer="ESC by Zara Toorox",
         model="Sensor Creator",
-        sw_version="5.0.4",
+        sw_version="5.1.0",
     )
     _LOGGER.debug(f"Zentrales ESC-Gerät sichergestellt.")
     
@@ -34,4 +34,3 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
     return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
-    
